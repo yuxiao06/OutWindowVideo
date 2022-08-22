@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <declare-styleable name="AlphaVideoView">
+        <attr name="scaleType" format="enum">
+            <enum name="center_inside" value="0" />
+            <enum name="center_crop" value="1" />
+            <enum name="fitXY" value="2" />
+        </attr>
+        <attr name="alphaModel" format="enum">
+            <enum name="video_trans_top_alpha" value="0" />
+            <enum name="video_trans_bottom_alpha" value="1" />
+            <enum name="video_trans_left_alpha" value="2" />
+            <enum name="video_trans_right_alpha" value="3" />
+        </attr>
+    </declare-styleable>
+
+</resources>
