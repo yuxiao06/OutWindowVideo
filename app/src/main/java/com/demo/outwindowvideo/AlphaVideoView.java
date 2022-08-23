@@ -13,6 +13,16 @@ import android.view.Surface;
 
 /**
  * 可播放带透明度视频的播放器
+ *
+ * MediaPlayer方法
+ * https://www.runoob.com/w3cnote/android-tutorial-mediaplayer.html
+ * <p>
+ * MediaPlayer状态机
+ * https://blog.csdn.net/thl789/article/details/7370438
+ * https://cloud.tencent.com/developer/article/1726394
+ * <p>
+ * OpenGL基本使用
+ * https://www.jianshu.com/p/6581703e1d98
  */
 public class AlphaVideoView extends GLTextureView
         implements MediaPlayer.OnInfoListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
@@ -93,23 +103,29 @@ public class AlphaVideoView extends GLTextureView
     private void init() {
         // 设置OpenGL ES 2.0
         setEGLContextClientVersion(GL_CONTEXT_VERSION);
-        // 安装一个配置器
+        // 安装一个配置器，颜色，深度，模板等设置
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        // 创建可播放透明视频的渲染器
         renderer = new AlphaVideoRenderer(alphaModel);
+        // 监听onSurfaceCreated
         renderer.setOnSurfacePrepareListener(surface -> {
             surfaceTexture = surface;
             isSurfaceCreated = true;
             openVideo();
         });
-        // 设置渲染器，有些方法必须在此方法之前调用，有些必须在之后调用
+        // 设置与此视图相关联的渲染器，有些方法必须在此方法之前调用，有些必须在之后调用
         setRenderer(renderer);
-        // 控制在暂停和恢复GLTextureView时是否保留EGL上下文
+        // 控制在暂停和恢复GLTextureView时是否保留EGLContext
         setPreserveEGLContextOnPause(true);
-        // 设置成透明
+        // 设置是否不透明
         setOpaque(false);
+        // 设置当前状态
         currentState = PlayerState.IDLE;
     }
 
+    /**
+     * 设置视频资源 从assets文件中
+     */
     public void setVideoFromAssets(String assetsFileName) {
         this.assetsFileName = assetsFileName;
         isDataSourceSet = true;
@@ -143,6 +159,9 @@ public class AlphaVideoView extends GLTextureView
         currentState = PlayerState.IDLE;
     }
 
+    /**
+     * 将assets中的文件设置到mediaPlayer中
+     */
     public void setVideoDataSourceFromAssets() {
         try {
             AssetFileDescriptor assetFileDescriptor = getContext().getAssets().openFd

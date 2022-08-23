@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         frontVideoView = findViewById(R.id.front_video);
         backVideoCover = findViewById(R.id.back_video_cover);
 
-        // 添加评论贾书记
+        // 添加评论假数据
         FakeCommentUtil.addFakeComment(this, findViewById(R.id.comment_container));
         // 设置播放资源
         backVideoView.setVideoFromAssets("backVideo.mp4");
